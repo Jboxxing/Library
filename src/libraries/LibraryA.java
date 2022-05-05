@@ -2,6 +2,7 @@ package libraries;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.InputMismatchException;
 import java.util.Map;
 import java.util.Scanner;
 
@@ -139,104 +140,113 @@ public class LibraryA implements libraryOperations.Operations
 		// of the libraries that currently exist, and prompted for another input.
 		LibraryA matchedLibrary = null;
 		boolean mainMenu = true;
-		while (mainMenu)
+		// TODO Place the try-catch block better such that program execution returns to main menu or the most
+		// recent user input prompt after catching exception. As of now, program is terminated.
+		try
 		{
-			System.out.println("Currently existing libraries:");
-			listExistingLibraries();
-			System.out.println();
-			String enterLibrary = "";
-			System.out.println("Which library would you like to view/modify?");
-			enterLibrary = keyboard.next();
-			matchedLibrary = matchLibraryName(enterLibrary);
-			if (matchedLibrary == null)
-				continue;
-			mainMenu = false;
-
-			// The user must decide whether to log in as a staff member or a client of the matched library.
-			// If the user decides to log in as a staff member, they must enter a staff ID that matches with one in the
-			// staff ArrayList.
-			// If the user decides to log in as a client, they must enter a client ID that matches with one in the client
-			// ArrayList.
-			// If no matching ID can be found, prompt the user to register as a new client/staff member (necessary for
-			// continuing use of this program).
-			boolean validOption = false;
-			int option = 0;
-			while (!mainMenu && !validOption)
+			while (mainMenu)
 			{
-				System.out.println("Enter: (1) to log in as a staff member, (2) to log in as a client.");
-				option = keyboard.nextInt();
+				System.out.println("Currently existing libraries:");
+				listExistingLibraries();
+				System.out.println();
+				String enterLibrary = "";
+				System.out.println("Which library would you like to view/modify?");
+				enterLibrary = keyboard.next();
+				matchedLibrary = matchLibraryName(enterLibrary);
+				if (matchedLibrary == null)
+					continue;
+				mainMenu = false;
 
-				if (option == 1)
+				// The user must decide whether to log in as a staff member or a client of the matched library.
+				// If the user decides to log in as a staff member, they must enter a staff ID that matches with one in the
+				// staff ArrayList.
+				// If the user decides to log in as a client, they must enter a client ID that matches with one in the client
+				// ArrayList.
+				// If no matching ID can be found, prompt the user to register as a new client/staff member (necessary for
+				// continuing use of this program).
+				boolean validOption = false;
+				int option = 0;
+				while (!mainMenu && !validOption)
 				{
-					validOption = true;
+					System.out.println("Enter: (1) to log in as a staff member, (2) to log in as a client.");
+					option = keyboard.nextInt();
 
-					System.out.print("Enter your staff ID: ");
-					String staffID = keyboard.next();
-					System.out.println();
-					// If the staff ID entered as input matches a currently existing ID, proceed to the next prompt.
-					// If there is no match found, ask the user if they would like to register as a new staff member.
-					// The staff ID assigned to a new staff member at this point may not be the same as the one they
-					// entered as input. It will depend on the next available countStaff value (for simplicity's sake).
-					// If the user does not want to register as a new staff member, return to the main menu.
-					if(!matchedLibrary.matchStaffID(staffID))
+					if (option == 1)
 					{
-						System.out.println("You are not currently registered as a staff member of " + matchedLibrary.libraryName + ".");
-						String registerOption = "";
-						while (true)
+						validOption = true;
+
+						System.out.print("Enter your staff ID: ");
+						String staffID = keyboard.next();
+						System.out.println();
+						// If the staff ID entered as input matches a currently existing ID, proceed to the next prompt.
+						// If there is no match found, ask the user if they would like to register as a new staff member.
+						// The staff ID assigned to a new staff member at this point may not be the same as the one they
+						// entered as input. It will depend on the next available countStaff value (for simplicity's sake).
+						// If the user does not want to register as a new staff member, return to the main menu.
+						if(!matchedLibrary.matchStaffID(staffID))
 						{
-							System.out.println("Would you like to register as a new staff member? (Y/N)");
-							registerOption = keyboard.next();
-							if (registerOption.contentEquals("Y"))
+							System.out.println("You are not currently registered as a staff member of " + matchedLibrary.libraryName + ".");
+							String registerOption = "";
+							while (true)
 							{
-								matchedLibrary.addStaff();
-								return;
+								System.out.println("Would you like to register as a new staff member? (Y/N)");
+								registerOption = keyboard.next();
+								if (registerOption.contentEquals("Y"))
+								{
+									matchedLibrary.addStaff();
+									break;
+								}
+								else if (registerOption.contentEquals("N"))
+								{
+									// Returns the program execution to the while (mainMenu) loop.
+									mainMenu = true;
+									break;
+								}
+								else
+								{
+									System.out.println("Invalid input.");
+									continue;
+								}
 							}
-							else if (registerOption.contentEquals("N"))
+						}
+
+						// Along with the valid operations of a staff member to an existing library defined in the Operations
+						// interface, staff members can create a new LibraryA, where they automatically become its owner
+						// and its first staff member.
+						boolean validStaffOption = false;
+						int staffOption = 0;
+						while (!mainMenu && !validStaffOption)
+						{
+							System.out.println("Enter: (1) to create a new LibraryA, (2) to view or modify an existing LibraryA.");
+							staffOption = keyboard.nextInt();
+							if (staffOption == 1)
 							{
-								// Returns the program execution to the while (mainMenu) loop.
-								mainMenu = true;
-								return;
+
+							}
+							else if (staffOption == 2)
+							{
+
 							}
 							else
 							{
-								System.out.println("Invalid input.");
-								continue;
+								System.out.println("Invalid option, please enter (1) or (2).");
 							}
 						}
 					}
-
-					// Along with the valid operations of a staff member to an existing library defined in the Operations
-					// interface, staff members can create a new LibraryA, where they automatically become its owner
-					// and its first staff member.
-					boolean validStaffOption = false;
-					int staffOption = 0;
-					while (!mainMenu && !validStaffOption)
+					else if (option == 2)
 					{
-						System.out.println("Enter: (1) to create a new LibraryA, (2) to view or modify an existing LibraryA.");
-						staffOption = keyboard.nextInt();
-						if (staffOption == 1)
-						{
-
-						}
-						else if (staffOption == 2)
-						{
-
-						}
-						else
-						{
-							System.out.println("Invalid option, please enter (1) or (2).");
-						}
+						validOption = true;
+					}
+					else
+					{
+						System.out.println("Invalid option, please enter (1) or (2).");
 					}
 				}
-				else if (option == 2)
-				{
-					validOption = true;
-				}
-				else
-				{
-					System.out.println("Invalid option, please enter (1) or (2).");
-				}
 			}
+		}
+		catch (InputMismatchException e)
+		{
+			System.out.println("Data type of input does not match what is expected (an integer).");
 		}
 	}
 
