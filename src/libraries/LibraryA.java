@@ -248,6 +248,10 @@ public class LibraryA implements libraryOperations.Operations
 		{
 			System.out.println("Data type of input does not match what is expected (an integer).");
 		}
+		finally
+		{
+			keyboard.close();
+		}
 	}
 
 	@Override
