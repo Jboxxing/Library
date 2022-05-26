@@ -8,3 +8,4 @@
 - Clients can also checkout and return books (need to define and implement return function).
 
 (More information to follow upon progression and satisfactory completion of this project)
+(Probably going to restart this project in a cleaner way, with more methods and classes for better clarity and readability.)
