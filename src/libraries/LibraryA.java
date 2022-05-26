@@ -217,15 +217,26 @@ public class LibraryA implements libraryOperations.Operations
 						int staffOption = 0;
 						while (!mainMenu && !validStaffOption)
 						{
-							System.out.println("Enter: (1) to create a new LibraryA, (2) to view or modify an existing LibraryA.");
+							System.out.println("Enter: (1) to create a new LibraryA, (2) to view or modify " + matchedLibrary.libraryName + ".");
 							staffOption = keyboard.nextInt();
 							if (staffOption == 1)
 							{
-
+								validStaffOption = true;
+								LibraryA lib = new LibraryA();
+								lib.addStaff();
 							}
 							else if (staffOption == 2)
 							{
-
+								validStaffOption = true;
+								boolean validMod = false;
+								System.out.println("Enter: (1) to search for a book, (2) to add or remove a book, or (3) to ban a client.");
+								int staffMod = keyboard.nextInt();
+								/*
+								while (!validMod)
+								{
+									
+								}
+								*/
 							}
 							else
 							{
