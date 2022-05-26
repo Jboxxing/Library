@@ -123,7 +123,7 @@ public class LibraryA implements libraryOperations.Operations
 	
 	public static void main(String[] args)
 	{
-		Scanner keyboard = new Scanner(System.in);
+		Scanner keyboard = null;
 		
 		// Welcomes the user to LibraryA libraries and creates a new library (LibraryA1) to start with.
 		System.out.println("Welcome to the chain of LibraryA libraries!");
@@ -140,33 +140,33 @@ public class LibraryA implements libraryOperations.Operations
 		// of the libraries that currently exist, and prompted for another input.
 		LibraryA matchedLibrary = null;
 		boolean mainMenu = true;
-		// TODO Place the try-catch block better such that program execution returns to main menu or the most
-		// recent user input prompt after catching exception. As of now, program is terminated.
-		try
+		
+		while (mainMenu)
 		{
-			while (mainMenu)
-			{
-				System.out.println("Currently existing libraries:");
-				listExistingLibraries();
-				System.out.println();
-				String enterLibrary = "";
-				System.out.println("Which library would you like to view/modify?");
-				enterLibrary = keyboard.next();
-				matchedLibrary = matchLibraryName(enterLibrary);
-				if (matchedLibrary == null)
-					continue;
-				mainMenu = false;
+			keyboard = new Scanner(System.in);
+			System.out.println("Currently existing libraries:");
+			listExistingLibraries();
+			System.out.println();
+			System.out.println("Which library would you like to view/modify?");
+			String enterLibrary = keyboard.next();
+			System.out.println("Entered library: " + enterLibrary);
+			matchedLibrary = matchLibraryName(enterLibrary);
+			if (matchedLibrary == null)
+				continue;
+			mainMenu = false;
 
-				// The user must decide whether to log in as a staff member or a client of the matched library.
-				// If the user decides to log in as a staff member, they must enter a staff ID that matches with one in the
-				// staff ArrayList.
-				// If the user decides to log in as a client, they must enter a client ID that matches with one in the client
-				// ArrayList.
-				// If no matching ID can be found, prompt the user to register as a new client/staff member (necessary for
-				// continuing use of this program).
-				boolean validOption = false;
-				int option = 0;
-				while (!mainMenu && !validOption)
+			// The user must decide whether to log in as a staff member or a client of the matched library.
+			// If the user decides to log in as a staff member, they must enter a staff ID that matches with one in the
+			// staff ArrayList.
+			// If the user decides to log in as a client, they must enter a client ID that matches with one in the client
+			// ArrayList.
+			// If no matching ID can be found, prompt the user to register as a new client/staff member (necessary for
+			// continuing use of this program).
+			boolean validOption = false;
+			int option = 0;
+			while (!mainMenu && !validOption)
+			{
+				try
 				{
 					System.out.println("Enter: (1) to log in as a staff member, (2) to log in as a client.");
 					option = keyboard.nextInt();
@@ -242,16 +242,16 @@ public class LibraryA implements libraryOperations.Operations
 						System.out.println("Invalid option, please enter (1) or (2).");
 					}
 				}
+				catch (InputMismatchException e)
+				{
+					System.out.println("Data type of input does not match what is expected (an integer).");
+					System.out.println();
+					mainMenu = true;
+				}
 			}
 		}
-		catch (InputMismatchException e)
-		{
-			System.out.println("Data type of input does not match what is expected (an integer).");
-		}
-		finally
-		{
+		if (keyboard != null)
 			keyboard.close();
-		}
 	}
 
 	@Override
@@ -281,6 +281,13 @@ public class LibraryA implements libraryOperations.Operations
 		// TODO Auto-generated method stub
 		return null;
 	}
+	
+	@Override
+	public String returnBook(long clientID, long bookID, String bookName, String author, int quantity)
+	{
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 	@Override
 	public String addBook(long staffID, long bookID, String bookName, String author, int quantity)
@@ -302,5 +309,4 @@ public class LibraryA implements libraryOperations.Operations
 		// TODO Auto-generated method stub
 		return null;
 	}
-
 }
