@@ -17,6 +17,8 @@ public interface Operations
 	
 	public abstract String checkout(long clientID, long bookID, String bookName, String author, int quantity);
 	
+	public abstract String returnBook(long clientID, long bookID, String bookName, String author, int quantity);
+	
 	public abstract String addBook(long staffID, long bookID, String bookName, String author, int quantity);
 	
 	public abstract String removeBook(long staffID, long bookID, int quantity);
